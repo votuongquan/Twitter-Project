@@ -69,5 +69,6 @@ export const USERS_MESSAGES = {
   OLD_PASSWORD_NOT_MATCH: 'Old password not match',
   CHANGE_PASSWORD_SUCCESSFULLY: 'Change password successfully',
   REFRESH_TOKEN_SUCCESSFULLY: 'Refresh token successfully',
-  GMAIL_NOT_VERIFIED: 'Gmail not verified'
+  GMAIL_NOT_VERIFIED: 'Gmail not verified',
+  UPLOAD_SUCCESSFULLY: 'Upload successfully'
 } as const
