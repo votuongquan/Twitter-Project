@@ -1,5 +1,5 @@
-import User from './models/schemas/User.schema'
 import { Request } from 'express'
+import User from './models/schemas/User.schema'
 declare module 'express' {
   interface Request {
     user?: User //thêm ? vì k phải request nào cũng có user

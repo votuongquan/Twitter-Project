@@ -1,12 +1,12 @@
 import fs from 'fs'
-import { Request } from 'express'
 import sharp from 'sharp'
-import { UPLOAD_DIR } from '~/constants/dir'
-import { getNameFromFullname, handleUploadImage } from '~/utils/file'
-import { isProduction } from '~/constants/config'
 import { config } from 'dotenv'
-import { MediaType } from '~/constants/enums'
+import { Request } from 'express'
 import { Media } from '~/models/Others'
+import { MediaType } from '~/constants/enums'
+import { isProduction } from '~/constants/config'
+import { UPLOAD_IMAGE_DIR, UPLOAD_VIDEO_DIR } from '~/constants/dir'
+import { getNameFromFullname, handleUploadImage, handleUploadVideo } from '~/utils/file'
 config()
 
 class MediasService {
@@ -21,7 +21,7 @@ class MediasService {
         ////filepath là đường của file cần xử lý đang nằm trong uploads/temp
         //file.newFilename: là tên unique mới của file sau khi upload lên, ta xóa đuôi và thêm jpg
         const newFilename = getNameFromFullname(file.newFilename) + '.jpg'
-        const newPath = UPLOAD_DIR + '/' + newFilename //đường dẫn mới của file sau khi xử lý
+        const newPath = UPLOAD_IMAGE_DIR + '/' + newFilename //đường dẫn mới của file sau khi xử lý
         const info = await sharp(file.filepath).jpeg().toFile(newPath)
         fs.unlinkSync(file.filepath) //xóa file cũ đi
         //cữ mỗi file sẽ biến thành object chứa thông tin của file
@@ -31,6 +31,22 @@ class MediasService {
             ? `${process.env.HOST}/static/image/${newFilename}`
             : `http://localhost:${process.env.PORT}/static/image/${newFilename}`,
           type: MediaType.Image
+        }
+      })
+    )
+    return result
+  }
+  async uploadVideo(req: Request) {
+    const files = await handleUploadVideo(req)
+
+    const result: Media[] = await Promise.all(
+      files.map(async (video) => {
+        const { newFilename } = video
+        return {
+          url: isProduction
+            ? `${process.env.HOST}/static/video/${newFilename}`
+            : `http://localhost:${process.env.PORT}/static/video/${newFilename}`,
+          type: MediaType.Video
         }
       })
     )

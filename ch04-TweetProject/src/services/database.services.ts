@@ -31,6 +31,22 @@ class DatabaseService {
     return this.db.collection(process.env.DB_USERS_COLLECTION as string)
   }
 
+  async indexUsers() {
+    await this.users.createIndex({ username: 1 }, { unique: true })
+    await this.users.createIndex({ email: 1 }, { unique: true })
+    await this.users.createIndex({ email: 1, password: 1 })
+  }
+
+  async indexRefreshTokens() {
+    this.refreshTokens.createIndex({ token: 1 })
+    //đây là ttl index , sẽ tự động xóa các document khi hết hạn của exp
+    this.refreshTokens.createIndex({ exp: 1 }, { expireAfterSeconds: 0 })
+  }
+
+  async indexFollowers() {
+    this.followers.createIndex({ user_id: 1, followed_user_id: 1 })
+  }
+
   get refreshTokens(): Collection<RefreshToken> {
     return this.db.collection(process.env.DB_REFRESH_TOKENS_COLLECTION as string)
   }

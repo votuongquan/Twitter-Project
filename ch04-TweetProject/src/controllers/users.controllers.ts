@@ -147,12 +147,7 @@ export const updateMeController = async (
 ) => {
   //middleware accessTokenValidator đã chạy rồi, nên ta có thể lấy đc user_id từ decoded_authorization
   const { user_id } = req.decoded_authorization as TokenPayload
-  //user_id để biết phải cập nhật ai
-  //lấy thông tin mới từ req.body
   const { body } = req
-  //lấy các property mà client muốn cập nhật
-  //ta sẽ viết hàm updateMe trong user.services
-  //nhận vào user_id và body để cập nhật
   const result = await userService.updateMe(user_id, body)
   return res.json({
     message: USERS_MESSAGES.UPDATE_ME_SUCCESSFULLY, //meesage.ts thêm  UPDATE_ME_SUCCESS: 'Update me success'
@@ -203,12 +198,9 @@ export const refreshTokenController = async (
   res: Response,
   next: NextFunction
 ) => {
-  // khi qua middleware refreshTokenValidator thì ta đã có decoded_refresh_token
-  //chứa user_id và token_type
-  //ta sẽ lấy user_id để tạo ra access_token và refresh_token mới
-  const { user_id, verify } = req.decoded_refresh_token as TokenPayload //lấy refresh_token từ req.body
+  const { user_id, verify, exp } = req.decoded_refresh_token as TokenPayload //lấy refresh_token từ req.body
   const { refresh_token } = req.body
-  const result = await userService.refreshToken(user_id, verify, refresh_token) //refreshToken chưa code
+  const result = await userService.refreshToken(user_id, verify, refresh_token, exp)
   return res.json({
     message: USERS_MESSAGES.REFRESH_TOKEN_SUCCESSFULLY, //message.ts thêm  REFRESH_TOKEN_SUCCESS: 'Refresh token success',
     result

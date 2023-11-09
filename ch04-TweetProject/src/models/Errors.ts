@@ -1,5 +1,5 @@
 // class chuyen dung tao ra loi co class ro rang
-import HTTP_STATUS from 'D:/PiedNodeJS/ch04-TweetProject/src/constants/httpStatus'
+import HTTP_STATUS from '~/constants/httpStatus'
 
 export class ErrorWithStatus {
   message: string

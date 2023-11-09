@@ -1,6 +1,8 @@
 //khai báo
 import { Router } from 'express'
 import { wrapAsync } from '~/utils/handlers'
+import { UpdateMeReqBody } from '~/models/requests/User.request'
+import { filterMiddleware } from '~/middlewares/common.middleware'
 import { accessTokenValidator, refreshTokenValidator } from '../middlewares/users.middlewares'
 import {
   loginValidator,
@@ -33,8 +35,6 @@ import {
   resendEmailVerifyController,
   verifyForgotPasswordTokenController
 } from '~/controllers/users.controllers'
-import { filterMiddleware } from '~/middlewares/common.middleware'
-import { UpdateMeReqBody } from '~/models/requests/User.request'
 
 const usersRouter = Router()
 

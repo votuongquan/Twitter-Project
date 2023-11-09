@@ -1,5 +1,5 @@
-import jwt, { JwtPayload } from 'jsonwebtoken'
 import { config } from 'dotenv'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { TokenPayload } from '~/models/requests/User.request'
 config()
 
